@@ -1,15 +1,17 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 
-app = Flask(__name__)
-app.config.update({
-    'SECRET_KEY': 'supersecretkey123',
-    'SQLALCHEMY_DATABASE_URI': 'sqlite:///data.db',
-    'SQLALCHEMY_TRACK_MODIFICATIONS': False,
-})
-db = SQLAlchemy(app)
-login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+db = SQLAlchemy()
 
-from app import routes, models
+def create_app():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = 'your-secret'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    db.init_app(app)
+
+    from .routes import routes
+    app.register_blueprint(routes)
+
+    return app
