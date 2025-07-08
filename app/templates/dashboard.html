@@ -1,32 +1,13 @@
-{% extends "base.html" %}
-
+{% extends 'base.html' %}
 {% block title %}Dashboard{% endblock %}
-
 {% block content %}
-    <h1>Welcome to Your Dashboard</h1>
-
-    <p>Hello, {{ username }}!</p>
-
-    <div>
-        <h2>Stats</h2>
-        <ul>
-            <li>Total Offers: {{ stats.total_offers }}</li>
-            <li>Total Clicks: {{ stats.total_clicks }}</li>
-            <li>Total Conversions: {{ stats.total_conversions }}</li>
-            <li>Conversion Rate: {{ stats.conversion_rate }}%</li>
-        </ul>
-    </div>
-
-    <div>
-        <h2>Recent Activity</h2>
-        {% if recent_activity %}
-            <ul>
-                {% for event in recent_activity %}
-                    <li>{{ event.timestamp }} - {{ event.description }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No recent activity.</p>
-        {% endif %}
-    </div>
+<h2>Dashboard</h2>
+<h3>Offers</h3>
+<ul>
+  {% for offer in offers %}
+    <li>{{ offer.name }} - ${{ offer.payout }}</li>
+  {% endfor %}
+</ul>
+<h3>Clicks: {{ clicks|length }}</h3>
+<h3>Conversions: {{ conversions|length }}</h3>
 {% endblock %}
