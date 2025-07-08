@@ -6,11 +6,9 @@ import os
 
 routes = Blueprint('routes', __name__)
 
-# Dummy login route for simplicity
 @routes.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Simple login (no DB check for now)
         username = request.form.get('username')
         password = request.form.get('password')
         if username == 'admin' and password == 'admin':
@@ -18,12 +16,10 @@ def login():
             return redirect(url_for('routes.dashboard'))
     return render_template('login.html')
 
-
 @routes.before_app_request
 def require_login():
     if not session.get('admin') and request.endpoint not in ['routes.login', 'static']:
         return redirect(url_for('routes.login'))
-
 
 @routes.route('/')
 def dashboard():
@@ -31,7 +27,6 @@ def dashboard():
     conversions = Conversion.query.all()
     revenue = sum([c.revenue for c in conversions])
     return render_template('dashboard.html', clicks=clicks, conversions=conversions, revenue=revenue)
-
 
 @routes.route('/offerwall', methods=['GET', 'POST'])
 def offerwall():
@@ -44,7 +39,6 @@ def offerwall():
     offers = Offer.query.all()
     return render_template('offerwall.html', offers=offers)
 
-
 @routes.route('/click/<int:offer_id>')
 def track_click(offer_id):
     offer = Offer.query.get(offer_id)
@@ -56,7 +50,6 @@ def track_click(offer_id):
     db.session.commit()
 
     return redirect(offer.url)
-
 
 @routes.route('/postback', methods=['GET'])
 def postback():
