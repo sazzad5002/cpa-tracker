@@ -1,16 +1,10 @@
-{% extends "base.html" %}
-
+{% extends 'base.html' %}
 {% block title %}Offerwall{% endblock %}
-
 {% block content %}
-    <h1>Offerwall</h1>
-
-    <ul>
-        {% for offer in offers %}
-            <li>
-                {{ offer.name }} - ${{ offer.payout }} -
-                <a href="{{ offer.url }}" target="_blank">View Offer</a>
-            </li>
-        {% endfor %}
-    </ul>
+<h2>Available Offers</h2>
+<ul>
+  {% for offer in offers %}
+    <li>{{ offer.name }} - ${{ offer.payout }}</li>
+  {% endfor %}
+</ul>
 {% endblock %}
