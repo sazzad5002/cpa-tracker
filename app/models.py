@@ -1,31 +1,20 @@
-from app import db, login_manager
-from flask_login import UserMixin
-import time, uuid
-
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(100))
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+from app import db
+from datetime import datetime
 
 class Offer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200))
-    url = db.Column(db.String(500))
+    name = db.Column(db.String(120), nullable=False)
+    url = db.Column(db.String(500), nullable=False)
 
 class Click(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    click_id = db.Column(db.String(100), unique=True)
-    offer_id = db.Column(db.Integer, db.ForeignKey('offer.id'))
-    country = db.Column(db.String(5))
-    timestamp = db.Column(db.Integer)
+    offer_id = db.Column(db.Integer, db.ForeignKey('offer.id'), nullable=False)
+    datetime = db.Column(db.DateTime, default=datetime.utcnow)
+    country = db.Column(db.String(10))
 
 class Conversion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    click_id = db.Column(db.String(100))
-    revenue = db.Column(db.Float)
-    country = db.Column(db.String(5))
-    timestamp = db.Column(db.Integer)
+    offer_id = db.Column(db.Integer, db.ForeignKey('offer.id'), nullable=False)
+    revenue = db.Column(db.Float, default=0.0)
+    country = db.Column(db.String(10))
+    datetime = db.Column(db.DateTime, default=datetime.utcnow)
